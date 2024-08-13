@@ -1,6 +1,18 @@
 const socket = io('http://localhost:3000');
 const canvas = document.getElementById('drawingCanvas');
 const ctx = canvas.getContext('2d');
+const clearButton = document.getElementById('clearButton');
+
+clearButton.addEventListener('click', clearCanvas);
+
+function clearCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  socket.emit('clearCanvas');
+}
+
+socket.on('clearCanvas', () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
 
 let isDrawing = false;
 let lastX = 0;
@@ -32,7 +44,6 @@ function draw(e) {
   ctx.lineWidth = currentLineWidth;
   ctx.stroke();
   
-
   const drawData = {
     userId: userId,
     x0: lastX,
@@ -92,4 +103,6 @@ colorPicker.addEventListener('change', (e) => {
 lineWidthInput.addEventListener('change', (e) => {
   currentLineWidth = e.target.value;
 });
+
+
 

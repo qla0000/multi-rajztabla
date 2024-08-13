@@ -25,9 +25,14 @@ io.on('connection', (socket) => {
     drawHistory.push(data);
     socket.broadcast.emit('draw', data);
   });
+
+  // Töröli a vásznat
+  socket.on('clearCanvas', () => {
+    socket.broadcast.emit('clearCanvas');
+  });
 });
-
-
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () =>  console.log(`Szerver fut a ${PORT} porton`));
+
+
