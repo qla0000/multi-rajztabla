@@ -76,7 +76,7 @@ socket.on('draw', (data) => {
   ctx.beginPath();
   ctx.moveTo(data.x0, data.y0);
   ctx.lineTo(data.x1, data.y1);
-  ctx.strokeStyle = data.userId === userId ? currentColor : '#FF0000'; // Más felhasználók rajza piros
+  ctx.strokeStyle = data.color;
   ctx.lineWidth = data.lineWidth;
   ctx.stroke();
 });
