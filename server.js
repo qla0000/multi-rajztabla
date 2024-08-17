@@ -8,6 +8,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 let drawHistory = [];
+let activeUsers = new Map();
 
 io.on('connection', (socket) => {
   console.log('Egy felhasználó csatlakozott');
@@ -33,6 +34,17 @@ io.on('connection', (socket) => {
   // Töröli a vásznat
   socket.on('clearCanvas', () => {
     socket.broadcast.emit('clearCanvas');
+  });
+
+  // Aktív felhasználók frissítése
+  socket.on('userActive', (data) => {
+    activeUsers.set(data.userId, { username: data.username, color: data.color });
+    io.emit('updateActiveUsers', Array.from(activeUsers.values()));
+  });
+
+  socket.on('disconnect', () => {
+    activeUsers.delete(socket.id);
+    io.emit('updateActiveUsers', Array.from(activeUsers.values()));
   });
 });
 
@@ -110,4 +122,4 @@ app.post('/login', async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Szerver hiba történt' });
   }
-}); 
+});

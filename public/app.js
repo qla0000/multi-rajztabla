@@ -116,4 +116,26 @@ function displayWelcomeMessage() {
 // Hívd meg ezt a függvényt az oldal betöltésekor
 displayWelcomeMessage();
 
+// Aktív felhasználók frissítése
+const activeUsersList = document.getElementById('activeUsersList');
 
+socket.on('connect', () => {
+  const username = localStorage.getItem('username');
+  socket.emit('userActive', { userId: socket.id, username, color: currentColor });
+});
+
+socket.on('updateActiveUsers', (users) => {
+  activeUsersList.innerHTML = '';
+  users.forEach(user => {
+    const userDiv = document.createElement('div');
+    userDiv.textContent = user.username;
+    userDiv.style.color = user.color;
+    activeUsersList.appendChild(userDiv);
+  });
+});
+
+//Active userek színválasztásának eseménykezelése a használt szín alapján
+colorPicker.addEventListener('change', (e) => {
+  currentColor = e.target.value;
+  socket.emit('userActive', { userId: socket.id, username: localStorage.getItem('username'), color: currentColor });
+});

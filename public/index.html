@@ -5,18 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kollaboratív Rajzoló</title>
   <style>
-    canvas { border: 1px solid black; }
-    #controls { margin-bottom: 10px; }
+    #container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+    }
+    canvas { 
+      border: 1px solid black;
+      display: block;
+    }
+    #controls { 
+      margin-bottom: 10px; 
+    }
+    #userInfo {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 200px;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    #welcomeMessage {
+      margin-bottom: 10px;
+      word-wrap: break-word;
+    }
   </style>
 </head>
 <body>
-  <div id="controls">
-    <input type="color" id="colorPicker" value="#000000">
-    <input type="range" id="lineWidth" min="1" max="20" value="2">
+  <div id="container">
+    <div id="controls">
+      <input type="color" id="colorPicker" value="#000000">
+      <input type="range" id="lineWidth" min="1" max="20" value="2">
+    </div>
+    <div id="userInfo">
+      <div id="welcomeMessage"></div>
+      <div id="activeUsersList"></div>
+    </div>
+    <button id="clearButton">Törlés</button>
+    <canvas id="drawingCanvas"></canvas>
   </div>
-  <div id="welcomeMessage" style="position: absolute; top: 10px; right: 10px;"></div>
-  <button id="clearButton">Törlés</button>
-  <canvas id="drawingCanvas"></canvas>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
   <script src="app.js"></script>
 </body>
