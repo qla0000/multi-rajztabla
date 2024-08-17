@@ -16,6 +16,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         const data = await response.json();
 
         if (response.ok) {
+            localStorage.setItem('username', data.username); // Mentjük a felhasználónevet a localStorage-ba
             alert('Sikeres bejelentkezés!');
             window.location.href = '/index.html'; // Átirányítás a főoldalra
         } else {
@@ -26,3 +27,4 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         alert('Hiba történt a bejelentkezés során.');
     }
 });
+

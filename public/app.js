@@ -104,5 +104,16 @@ lineWidthInput.addEventListener('change', (e) => {
   currentLineWidth = e.target.value;
 });
 
+//Üdvözlő üzenet megjelenítése
+function displayWelcomeMessage() {
+  const username = localStorage.getItem('username');
+  if (username) {
+    const welcomeDiv = document.getElementById('welcomeMessage');
+    welcomeDiv.textContent = `Üdvözöljük ${username}!`;
+  }
+}
+
+// Hívd meg ezt a függvényt az oldal betöltésekor
+displayWelcomeMessage();
 
 

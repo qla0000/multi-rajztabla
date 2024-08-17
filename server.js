@@ -105,21 +105,9 @@ app.post('/login', async (req, res) => {
     }
     
     // Sikeres bejelentkezés
-    res.json({ message: 'Sikeres bejelentkezés', userId: user._id });
+    res.json({ message: 'Sikeres bejelentkezés', userId: user._id, username: user.username });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Szerver hiba történt' });
   }
-});
-app.post('/login', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    // Itt implementáld a bejelentkezési logikát
-    // Például: felhasználó keresése, jelszó ellenőrzése, stb.
-    res.json({ message: 'Sikeres bejelentkezés' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Szerver hiba történt' });
-  }
-});
-
+}); 
