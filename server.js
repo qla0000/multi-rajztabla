@@ -1,7 +1,15 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
+
+app.use(cors());
+
+app.get('/', (req, res) => {
+  res.redirect('/register.html');
+});
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -9,10 +17,18 @@ app.use(express.static('public'));
 
 let drawHistory = [];
 let activeUsers = new Map();
+let currentDrawing = [];
 
 io.on('connection', (socket) => {
+  // Küldjük el az aktuális rajzot és az active users listát az új kliensnek
+  socket.emit('initialState', { drawing: currentDrawing, users: Array.from(activeUsers.values()) });
+
+  socket.on('draw', (data) => {
+    currentDrawing.push(data);
+    socket.broadcast.emit('draw', data);
+  });
+
   console.log('Egy felhasználó csatlakozott');
-  
   
   socket.on('disconnect', () => {
     console.log('Egy felhasználó lecsatlakozott');
@@ -50,7 +66,8 @@ io.on('connection', (socket) => {
 
 // Szerver indítása
 const PORT = process.env.PORT || 3000;
-http.listen(PORT, () =>  console.log(`Szerver fut a ${PORT} porton`));
+const IP = '192.168.0.4';
+http.listen(PORT, IP, () =>  console.log(`Szerver fut a http://${IP}:${PORT} címen.`));
 
 // Felhasználói regisztráció kezelése
 const User = require('../multi_rajztabla/models/user'); ///itt lehet hibás 

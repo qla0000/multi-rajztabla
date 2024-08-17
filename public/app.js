@@ -1,4 +1,4 @@
-const socket = io('http://localhost:3000');
+const socket = io('http://192.168.0.4:3000', {withCredentials: true}); // A szerver IP-címét majd cserélje ki a megfelelő IP-címre
 const canvas = document.getElementById('drawingCanvas');
 const ctx = canvas.getContext('2d');
 const clearButton = document.getElementById('clearButton');
@@ -81,6 +81,11 @@ socket.on('draw', (data) => {
   ctx.stroke();
 });
 
+socket.on('initialState', (data) => {
+  data.drawing.forEach(drawData => drawLine(drawData.x0, data.y0, data.x1, data.y1, data.color, data.lineWidth));
+  updateActiveUsersList(data.users);
+});
+
 socket.on('drawHistory', (history) => {
   history.forEach(data => {
     ctx.beginPath();
@@ -139,3 +144,13 @@ colorPicker.addEventListener('change', (e) => {
   currentColor = e.target.value;
   socket.emit('userActive', { userId: socket.id, username: localStorage.getItem('username'), color: currentColor });
 });
+
+function updateActiveUsersList(users) {
+  activeUsersList.innerHTML = '';
+  users.forEach(user => {
+    const userDiv = document.createElement('div');
+    userDiv.textContent = user.username;
+    userDiv.style.color = user.color;
+    activeUsersList.appendChild(userDiv);
+  });
+}
