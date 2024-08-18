@@ -1,3 +1,2 @@
 # multi-rajztabla
-This is just a simple multiplayer whiteboard.
-And also my first commit :)
+This is just a simple multiplayer whiteboard using node + express.js and MongoDB for users 
